@@ -47,6 +47,7 @@
               statix.enable = true;
               deadnix.enable = true;
               nixfmt-rfc-style.enable = true;
+              typos.enable = true;
               typstyle.enable = true;
             };
           };
@@ -55,6 +56,7 @@
             src = ./.;
             extraFonts = with pkgs; [
               jetbrains-mono
+              open-sans
             ];
             mainFile = "main.typ";
             outputFile = "main.pdf";
@@ -68,10 +70,12 @@
               typst
               typstyle
               tinymist
+              typos
             ];
             TYPST_FONT_PATHS = pkgs.symlinkJoin {
               name = "typst-fonts";
               paths = with pkgs; [
+                open-sans
                 jetbrains-mono
               ];
             };

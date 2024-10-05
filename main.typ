@@ -1,7 +1,10 @@
 #import "./utils.typ": *
 
 #set page(paper: "presentation-16-9")
-#set text(size: 20pt, font: "DejaVu Sans")
+#set text(size: 20pt, font: "Open Sans")
+// Set raw text font.
+// Default is JetBrains Mono at 9tp with DejaVu Sans Mono as fallback
+#show raw: set text(font: ("JetBrains Mono", "DejaVu Sans Mono"), size: 16pt)
 
 #pdfpc.config(default-transition: (
   type: "push",
