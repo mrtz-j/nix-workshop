@@ -3,11 +3,13 @@
 #set page(paper: "presentation-16-9")
 #set text(size: 20pt, font: "DejaVu Sans")
 
-#pdfpc.config(
-  default-transition: (
-    type: "push", duration-seconds: 0.2, angle: rtl, alignment: "vertical", direction: "outward",
-  ),
-)
+#pdfpc.config(default-transition: (
+  type: "push",
+  duration-seconds: 0.2,
+  angle: rtl,
+  alignment: "vertical",
+  direction: "outward",
+))
 #pdfpc.config(duration-minutes: 20)
 
 #polylux-slide[
@@ -26,22 +28,24 @@
   #content
   #v(-20pt)
   #line(
-    start: (0%, 0%), end: (97%, 0%), stroke: 2pt + gradient.linear(black, white),
+    start: (0%, 0%),
+    end: (97%, 0%),
+    stroke: 2pt + gradient.linear(black, white),
   )
 ]
 
 #polylux-slide[
-== Table of Contents
-#v(15pt)
-- Nix the language
-- NixOS
-- Home-manager
-- Flakes
-- Specializations
+  == Table of Contents
+  #v(15pt)
+  - Nix the language
+  - NixOS
+  - Home-manager
+  - Flakes
+  - Specializations
 
-#pdfpc.speaker-note(```md
-- context -> What is nix ? - Why do we even use it? Is it just another linux distro?
-    ```)
+  #pdfpc.speaker-note(```md
+  - context -> What is nix ? - Why do we even use it? Is it just another linux distro?
+  ```)
 ]
 
 #include "./topics/context.typ"
@@ -54,11 +58,11 @@
 #let slides = "https://github.com/mrtz-j/nix-workshop"
 
 #polylux-slide[
-	== Demos?
+  == Demos?
 
-	They are here:#footnote(link(slides))
+  They are here:#footnote(link(slides))
 
-	You need to install Nix on your machine to run them.
+  You need to install Nix on your machine to run them.
 
-	#qrcode(slides, options: (scale: 3.0))
+  #qrcode(slides, options: (scale: 3.0))
 ]
