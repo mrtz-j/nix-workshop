@@ -9,7 +9,20 @@ permissions:
   contents: write
 
 jobs:
-  build_release_thesis:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v13
+        with:
+          diagnostic-endpoint: ""
+          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+        with:
+          diagnostic-endpoint: ""
+      - run: nix -Lv flake check
+  
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,7 +30,6 @@ jobs:
         with:
           fetch-depth: '0'
           lfs: true
-
       - name: Create initial tag
         run: |
           if [ -z "$(git tag -l 'v*')" ]; then
@@ -32,8 +44,15 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: 'patch'
 
-      - uses: typst-community/setup-typst@v3
-      - run: typst compile ./main.typ main.pdf
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v13
+        with:
+          diagnostic-endpoint: ""
+          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+        with:
+          diagnostic-endpoint: ""
+      - run: nix -Lv build 
 
       - name: Create Release
         id: create_release
