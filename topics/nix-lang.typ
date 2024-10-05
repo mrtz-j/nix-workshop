@@ -27,7 +27,7 @@
         - nix repl
       - evaluate code in file
         - nix-instantiate
-      - comments: \-\-
+      - comments: \#
       - function: argument:body
         - x: 5 + x
         - one argument only
