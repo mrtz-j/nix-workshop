@@ -1,0 +1,5 @@
+result*
+*.pdf
+*.pdfpc
+.pre-commit-config.yaml
+.direnv
