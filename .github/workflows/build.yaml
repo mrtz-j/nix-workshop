@@ -52,7 +52,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v4
         with:
           diagnostic-endpoint: ""
-      - run: nix -Lv develop typst compile main.typ main.pdf
+      - run: nix -Lv develop --command typst compile main.typ main.pdf
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2

@@ -19,5 +19,5 @@ nix -Lv build
 or interactively with:
 
 ```bash
-nix -Lv develop typst watch main.typ main.pdf
+nix -Lv develop --command typst watch main.typ main.pdf
 ```
