@@ -54,10 +54,6 @@
           packages.default = typst-nix.lib.${system}.mkTypstDerivation {
             name = "nix-workshop";
             src = ./.;
-            extraFonts = with pkgs; [
-              jetbrains-mono
-              open-sans
-            ];
             mainFile = "main.typ";
             outputFile = "main.pdf";
             typstPackages = {
@@ -72,13 +68,6 @@
               tinymist
               typos
             ];
-            TYPST_FONT_PATHS = pkgs.symlinkJoin {
-              name = "typst-fonts";
-              paths = with pkgs; [
-                open-sans
-                jetbrains-mono
-              ];
-            };
             shellHook = ''
               ${config.pre-commit.installationScript}
             '';

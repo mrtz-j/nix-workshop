@@ -3,7 +3,7 @@
 #import themes.simple: *
 
 #let title = "Introduction to Nix"
-#let author = "Moritz Jörg | Simen Kirkvik"
+#let author = "Simen Kirkvik | Moritz Jörg"
 #let date = datetime(year: 2024, month: 10, day: 29)
 
 #set document(title: title, author: author, date: date)
@@ -311,7 +311,7 @@
 #slide[
   == Packaging #footnote("Example 1")
 
-  #set text(14pt)
+  #set text(18pt)
 
   #v(1cm)
 
@@ -333,7 +333,7 @@
       ```
     ],
     [
-      #v(2cm)
+      #v(1.5cm)
       ```txt
        _____
       < moo >
@@ -425,7 +425,7 @@
 
       #v(2em)
 
-      *or DIY!* (Niv, Npins)
+      *or DIY!* #footnote[https://github.com/andir/npins]
     ],
     [
       *w/ flakes*:
@@ -468,23 +468,22 @@
 
   ```nix
   outputs = { nixpkgs, ... }: {
-    nixosConfigurations."Your System" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."coolpc" = nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs pkgs;
-        mod = ./hardware/something/base_config.nix;
       };
-      modules = [ /* a list of modules goes here */ ];
+      modules = [ /* A list of modules goes here */ ];
   };};
   ```
 
   *System Closure*:
   ```bash
-  nix build .#nixosConfigurations.test.config.system.build.toplevel
+  nix build .#nixosConfigurations.coolpc.config.system.build.toplevel
   ```
 
   *Rebuild*:
   ```bash
-  nixos-rebuild <switch|boot|...> --flake .#test
+  nixos-rebuild <switch|boot|...> --flake .#coolpc
   ```
 ]
 
