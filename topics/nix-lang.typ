@@ -2,7 +2,6 @@
 
 #polylux-slide[
   == What is Nix?
-  #v(15pt)
 
   - just a programming language
   - functional
@@ -18,7 +17,6 @@
 
 #polylux-slide[
   == Basics
-  #v(15pt)
 
   #columns(
     2,
@@ -35,13 +33,13 @@
       #colbreak()
       - native types
         - lists
-        - attribute set
+        - attribute sets
         - functions
         - numbers, strings, *paths*, etc
-      - inbuilt functionality
-        - import
-        - lib.toString
-        - std.mkDerivation
+      - built-in functionality
+        - `import`
+        - `lib.toString`
+        - `std.mkDerivation`
     ],
   )
   #pdfpc.speaker-note(```md
@@ -50,7 +48,6 @@
 
 #polylux-slide[
   == Tricks
-  #v(15pt)
   #columns(
     3,
     [
@@ -61,7 +58,7 @@
       in {
         func 24
       }
-      -- 48
+      # 48
       ```)
       - *only in this scope*
       #colbreak()
@@ -125,7 +122,6 @@
 
 #polylux-slide[
   == Packages
-  #v(15pt)
   #sourcecode(```nix
   { stdenv
   , lib
@@ -154,7 +150,7 @@
     ];
 
     meta = with lib; {
-      -- homepage, architecture support, help page etc
+      # homepage, architecture support, help page etc
     };
   }
   ```)

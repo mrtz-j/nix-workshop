@@ -2,7 +2,6 @@
 
 #polylux-slide[
   == What else is Nix good for?
-  #v(15pt)
 
   - servers
     - declarative/reproducible server instantiation

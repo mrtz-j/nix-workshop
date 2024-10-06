@@ -2,7 +2,6 @@
 
 #polylux-slide[
   == NixOS
-  #v(15pt)
 
   - a GNU/Linux distribution
   - fundamentally different file system design

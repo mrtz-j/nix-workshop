@@ -2,7 +2,6 @@
 
 #polylux-slide[
   == Flakes
-  #v(15pt)
 
   - extension to nixos/homemanager
   - removes the issue of hashes
@@ -15,7 +14,6 @@
 
 #polylux-slide[
   === Example
-  #v(15pt)
   #sourcecode(```nix
   {
     description = "dots";
@@ -50,7 +48,6 @@
 
 #polylux-slide[
   === Overrides
-  #v(15pt)
   #sourcecode(```nix
   new: old:
   {
