@@ -18,23 +18,6 @@
   )
 ];
 
-#let default_footer() = [
-  #v(15pt)
-  #columns(
-    2,
-    [
-      #colbreak()
-      #align(
-        right + bottom,
-        [
-          #set text(size: 20pt)
-          #counter(page).display("1 of 1", both: true)
-        ],
-      )
-    ],
-  )
-];
-
 #let img(name, width: auto, height: auto, fit: "cover") = [
   #image("./figures/" + name, width: width, height: height, fit: fit)
 ]

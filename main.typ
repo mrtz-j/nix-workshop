@@ -1,72 +1,532 @@
-#import "./utils.typ": *
+#import "@preview/touying:0.5.2": *
+#import "@preview/tiaoma:0.2.0": qrcode
+#import themes.simple: *
 
+#let title = "Introduction to Nix"
+#let author = "Moritz Jörg | Simen Kirkvik"
+#let date = datetime(year: 2024, month: 10, day: 29)
+
+#set document(title: title, author: author, date: date)
 #set page(paper: "presentation-16-9")
-#set text(size: 20pt, font: "Open Sans")
-// Set raw text font.
-// Default is JetBrains Mono at 9tp with DejaVu Sans Mono as fallback
-#show raw: set text(font: ("JetBrains Mono", "DejaVu Sans Mono"), size: 16pt)
 
-#pdfpc.config(default-transition: (
-  type: "push",
-  duration-seconds: 0.2,
-  angle: rtl,
-  alignment: "vertical",
-  direction: "outward",
-))
-#pdfpc.config(duration-minutes: 20)
+#show: simple-theme.with(footer: none)
 
-#polylux-slide[
-  #align(horizon + center)[
-    = Introduction to Nix
-    #image("./figures/nix-logo.svg", width: 150pt)
-    Moritz Jörg | Simen Kirkvik
+#title-slide[
+  = #title
 
-    29.10.2024
+  #image("figures/nix-logo.svg", width: 150pt)
+
+  #set text(16pt)
+
+  #author
+
+  #date.display("[month repr:long] [day padding:none], [year]")
+]
+
+#slide[
+  == Problem
+
+  #set align(center)
+  #image("figures/works.jpg", width: 75%)
+]
+
+#slide[
+  == The "Solution"
+
+  Functions:
+
+  #grid(
+    columns: 2, gutter: 2.5cm,
+  )[
+    ```nix
+    { inputs = { ... }; }
+    ```
+
+    - Dependencies are inputs
+    - Usually tarballs or git repos
+    - Pinned and hashed
+  ][
+    ```nix
+    { outputs = inputs: { ... }; }
+    ```
+
+    - Outputs are functions of inputs// or contents of other outputs, or nothing
+    - Can be anything
+    - Lazily evaluated// evaluated only when needed
   ]
 ]
 
-#set page(background: regular_page_design(), footer: default_footer())
+#slide[
+  == What is Nix?
 
-#show heading.where(level: 3).or(heading.where(level: 2)): content => [
-  #content
-  #v(-20pt)
-  #line(
-    start: (0%, 0%),
-    end: (97%, 0%),
-    stroke: 2pt + gradient.linear(black, white),
+  - Just a programming language
+  - Functional
+    - lazy
+    - everything is an expression
+  - Turing complete
+  - Made to configure environments
+    - native paths
+    - tooling for environments -> nixos etc
+]
+
+#slide[
+  == Trinity
+
+  #grid(
+    columns: 2,
+    gutter: 1.5cm,
+    [
+      - Nix: the package manager
+      - Nix: the programming language
+      - Nixpkgs: the repository
+      - NixOS: the operating system
+    ],
+    [#image("figures/nix-three.png", width: 75%)],
   )
-  #v(15pt)
+]
+#slide[
+  == Nix REPL
+
+  The Nix REPL (Read-Eval-Print Loop) is an interactive environment for evaluating Nix expressions.
+
+  ```bash
+  nix repl -f '<nixpkgs>'
+  ```
+
+  Useful commands:
+  - `:l <path>`: load a file
+  - `:q`: quit
+  - `:t`: show type of expression
+  - `:t <expr>`: show type of expression
+
 ]
 
-#polylux-slide[
-  == Table of Contents
-  #v(15pt)
-  - Nix the language
-  - NixOS
-  - Home-manager
-  - Flakes
-  - Specializations
+#slide[
+  == Language Basics
 
-  #pdfpc.speaker-note(```md
-  - context -> What is nix ? - Why do we even use it? Is it just another linux distro?
-  ```)
+  #grid(columns: 2, gutter: 6cm)[
+    Integers:
+
+    ```nix
+    > x = 1 + 1
+    > x
+    2
+    ```
+
+    Floats:
+
+    ```nix
+    > y = 1.0 + 1.0
+    > y
+    2.0
+    ```
+  ][
+    Strings:
+
+    ```nix
+    > z = "world"
+    > "hello ${z}"
+    "hello world"
+    ```
+
+    Attribute sets:
+
+    ```nix
+    > s = { a = { b = 1; }; }
+    > s.a.b
+    1
+    ```
+  ]
 ]
 
-#include "./topics/context.typ"
-#include "./topics/nix-lang.typ"
-#include "./topics/nixos.typ"
-#include "./topics/homemanager.typ"
-#include "./topics/flakes.typ"
-#include "./topics/specializations.typ"
+#slide[
+  == Language Basics
+
+  #grid(columns: 2, gutter: 3cm)[
+    Lists:
+
+    ```nix
+    > [ 1 "2" (_: 3) ]
+    [ 1 "2" <thunk> ]
+    ```
+
+    Recursive attrsets:
+
+    ```nix
+    > rec { x = 1; y = x; }
+    { x = 1; y = 1; }
+    ```
+  ][
+    Bindings:
+
+    ```nix
+    > let x = 1; in x + 1
+    2
+    ```
+
+    Inherits:
+
+    ```nix
+    > let x = 1; y = x; in
+        { inherit x y; }
+    { x = 1; y = 1; }
+    ```
+  ]
+]
+
+#slide[
+  == Language Basics
+
+  #grid(columns: 2, gutter: 3cm)[
+    Functions 1:
+
+    ```nix
+    > f = x: x + 1
+    > f 2
+    3
+    > g = g': x: g' x + 1
+    > g f 2
+    4
+    ```
+  ][
+    Functions 2:
+
+    ```nix
+    > h = { x ? 1 }: x + 1
+    > h
+    <function>
+    > h { }
+    2
+    > h { x = 2; }
+    3
+    ```
+  ]
+]
+
+#slide[
+  == Derivation
+
+  A _derivation_
+
+  #grid(columns: 2, gutter: 3cm)[
+    - is plan / blueprint
+    - it's used for producing
+      - `lib`: library outputs
+      - `bin`: binary outputs
+      - `dev`: header files, etc.
+      - `man`: man page entries
+      - ...
+  ][
+    ```hs
+    derivation ::
+      { system    : String
+      , name      : String
+      , builder   : Path | Drv
+      , ? args    : [String]
+      , ? outputs : [String]
+      } -> Drv
+    ```
+  ]
+]
+
+#slide[
+  == Derivation
+
+  Example:
+
+  #grid(columns: 2, gutter: 0.75cm)[
+    ```hs
+    derivation ::
+      { system    : String
+      , name      : String
+      , builder   : Path | Drv
+      , ? args    : [String]
+      , ? outputs : [String]
+      } -> Drv
+    ```
+  ][
+    ```nix
+    derivation {
+      system = "aarch64-linux";
+      name = "hi";
+      builder = "/bin/sh";
+      args = ["-c" "echo hi >$out"];
+      outputs = ["out"];
+    }
+    ```
+  ]
+]
+
+#slide[
+  == Derivation
+
+  Special _variables_:
+
+  #grid(columns: 2, gutter: 0.75cm)[
+    ```nix
+    derivation {
+      system = "aarch64-linux";
+      name = "hi";
+      builder = "/bin/sh";
+      args = ["-c" "echo hi >$out"];
+      outputs = ["out"];     ^^^^
+    }             ^^^
+    ```
+  ][
+    - `$src`: build source
+    - `$out`: build output (default)
+    - custom outputs
+
+  ]
+
+]
+
+#slide[
+  == Nix Store
+
+  ```nix
+  /nix/store/l2h1lyz50rz6z2c8jbni9daxjs39wmn3-hello
+  |---------|--------------------------------|-----|
+  store     hash                             name
+  prefix
+  ```
+
+  - Store prefix can be either local or remote (`binary cache`)
+  - Hash either derived from input (`default`) or output (`CA derivation`)
+  - The hash ensures two realised derivations with the same name have different
+    paths if the inputs differ at all
+]
+
+#slide[
+  == Packaging
+
+  The process of: Nix expressions $arrow.r.double$ derivation(s)
+
+  - `builtins.derivation`
+  - `stdenv.mkDerivation` (from `nixpkgs`)
+  - `pkgs.buildDotnetModule` (from `nixpkgs`)
+  - ...
+]
+
+#slide[
+  == Packaging #footnote("Example 1")
+
+  #set text(14pt)
+
+  #v(1cm)
+
+  #grid(
+    columns: 2,
+    gutter: 4cm,
+    [
+      ```nix
+      { stdenv
+      , lib
+      , pkgs
+      }:
+      pkgs.writeShellApplication {
+          name = "moo";
+          version = "0.0.1";
+          runtimeInputs = [ pkgs.cowsay ];
+          text = "cowsay moo";
+      }
+      ```
+    ],
+    [
+      #v(2cm)
+      ```txt
+       _____
+      < moo >
+       -----
+              \   ^__^
+               \  (oo)\_______
+                  (__)\       )\/\
+                      ||----w |
+                      ||     ||
+      ```
+    ],
+  )
+  // https://nix.dev/tutorials/nix-language
+]
+
+#slide[
+  == Development #footnote("Example 2")
+
+  #set text(14pt)
+
+  #grid(
+    columns: 2,
+    gutter: 2cm,
+    [
+      *Shell*:
+
+      - `nix develop` // starts a bash, cleans everything
+      - `direnv` // keep your current shell, enter a dir, it auto activates, leaves the dir, auto deactivates
+
+      #v(2em)
+
+      ```nix
+      pkgs.mkShell {
+        nativeBuildInputs = with pkgs; [
+          cargo
+          rustc
+          rustfmt
+        ];
+      };
+      ```
+    ],
+    [
+      *Formatter* (flake):
+
+      - `nix fmt`
+      - a single package, or $arrow.b$
+
+      #v(2em)
+
+      ```nix
+      formatter = pkgs.writeShellScriptBin "formatter" ''
+        set -eoux pipefail
+        shopt -s globstar
+        ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt .
+        ${pkgs.rustfmt}/bin/rustfmt **/*.rs
+      '';
+      ```
+    ],
+  )
+]
+
+#slide[
+  == Pinning
+
+  #set text(14pt)
+
+  #grid(
+    columns: 2,
+    gutter: 2cm,
+    [
+      *w/ builtin versions*: // for most critical and popular packages: llvm, gcc, node, ...
+
+      ```bash
+      nix-repl> pkgs.coq_8_
+      pkgs.coq_8_10  pkgs.coq_8_12
+      pkgs.coq_8_14  pkgs.coq_8_16
+      pkgs.coq_8_18  pkgs.coq_8_5
+      pkgs.coq_8_7   pkgs.coq_8_9
+      ...
+      ```
+
+      #v(2em)
+
+      *w/ `nix shell`*:
+
+      ```bash
+      nix shell nixpkgs/<hash>#{pkg1,...}
+      ```
+
+      #v(2em)
+
+      *or DIY!* (Niv, Npins)
+    ],
+    [
+      *w/ flakes*:
+
+      ```nix
+      inputs = {
+        nixpkgsForA.url = "github:nixos/nixpkgs/<branch or hash>";
+        nixpkgsForB.url = "github:nixos/nixpkgs/<branch or hash>";
+        ...
+      };
+
+      outputs = { self, ... }: {
+        ...
+        pkgsA.<some pkg>;
+        pkgsB.<some pkg>;
+        ...
+      };
+      ```
+    ],
+  )
+]
+
+#slide[
+  == System Configuration
+
+  i.e. NixOS
+
+  - A GNU/Linux distribution
+  - Fundamentally different file system design
+    - nix store
+    - otherwise just like any penguin variant
+  - Only configures and installs system wide programs
+    - use home-manager for user-based configuration
+]
+
+#slide[
+  == System Configuration
+
+  #set text(18pt)
+
+  ```nix
+  outputs = { nixpkgs, ... }: {
+    nixosConfigurations."Your System" = nixpkgs.lib.nixosSystem {
+      specialArgs = {
+        inherit inputs pkgs;
+        mod = ./hardware/something/base_config.nix;
+      };
+      modules = [ /* a list of modules goes here */ ];
+  };};
+  ```
+
+  *System Closure*:
+  ```bash
+  nix build .#nixosConfigurations.test.config.system.build.toplevel
+  ```
+
+  *Rebuild*:
+  ```bash
+  nixos-rebuild <switch|boot|...> --flake .#test
+  ```
+]
+
+#slide[
+  == What else is Nix good for?
+
+  - CI/CD
+    - declarative and reproducible pipelines
+    - no version mismatch due to nix
+    - available as a github runner -> nix-run
+  - Kubernetes
+    - declarative/reproducible deployments
+    - easily convertible to and from docker files/images
+]
 
 #let slides = "https://github.com/mrtz-j/nix-workshop"
 
-#polylux-slide[
-  == Demos?
+#slide[
+  == Examples?
 
-  They are here:#footnote(link(slides))
+  #grid(
+    columns: 2,
+    gutter: 2cm,)[
 
-  You need to install Nix on your machine to run them.
+    They are here:#footnote(link(slides))
 
-  #qrcode(slides, options: (scale: 3.0))
+    You need to install Nix on your machine to run them ;)
+  ][
+
+    #qrcode(slides, options: (scale: 3.0))
+  ]
+]
+
+#slide[
+  == Resources
+
+  - Installer: https://github.com/determinatesystems/nix-installer
+  - REPL is your friend: `nix repl`
+  - Intro: https://zero-to-nix.com
+  - Manual: https://nixos.org/manual/nix/unstable/
+  - Forum: https://discourse.nixos.org
+  - Options: https://mynixos.com
+  - Source code search:
+    - https://github.com/features/code-search
 ]
