@@ -4,9 +4,9 @@
 
 Slides and demos for our nix workshop at UiT.
 
-## Demos
+## Examples
 
-Can be found in the `demos` directory.
+Can be found in the `examples` directories.
 
 You will need Nix to run them ;)
 
