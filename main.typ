@@ -35,6 +35,7 @@
     end: (97%, 0%),
     stroke: 2pt + gradient.linear(black, white),
   )
+  #v(15pt)
 ]
 
 #polylux-slide[
