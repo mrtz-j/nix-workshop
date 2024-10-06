@@ -1,5 +1,7 @@
 # Introduction to nix 29.10.2024
 
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
 Slides and demos for our nix workshop at UiT.
 
 ## Demos
