@@ -518,6 +518,17 @@
 ]
 
 #slide[
+  == Challenge
+
+  - Create hello world apps in whatever language you want
+  - Package it in nix
+    - default.nix
+    - direnv with shell.nix
+  - Have everyone else make them work by just entering your folder
+  - Try adding dependencies
+]
+
+#slide[
   == Resources
 
   - Installer: https://github.com/determinatesystems/nix-installer
