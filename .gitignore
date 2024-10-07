@@ -3,3 +3,4 @@ result*
 *.pdfpc
 .pre-commit-config.yaml
 .direnv
+hello

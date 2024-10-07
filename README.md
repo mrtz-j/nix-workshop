@@ -6,13 +6,13 @@ Slides and demos for our nix workshop at UiT.
 
 ## Starter
 
-A starter project can be found in the `starter` directory. 
+A starter project can be found in the [`starter`](./starter) directory. 
 
-It contains a simple Nix project with a `default.nix` and a `shell.nix` file.
+It contains a simple Nix project with a [`default.nix`](./starter/default.nix) and a [`shell.nix`](./starter/shell.nix) file.
 
 ## Examples
 
-Can be found in the `examples` directories.
+Can be found in the [`examples`](./examples) directories.
 
 ## Build
 

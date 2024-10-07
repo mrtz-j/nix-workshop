@@ -5,6 +5,7 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     gcc
-    gdb
+    # gdb
+    lldb
   ];
 }
