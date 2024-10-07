@@ -1,14 +1,18 @@
-# Introduction to nix 29.10.2024
+# Introduction to Nix 29.10.2024
 
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
 Slides and demos for our nix workshop at UiT.
 
+## Starter
+
+A starter project can be found in the `starter` directory. 
+
+It contains a simple Nix project with a `default.nix` and a `shell.nix` file.
+
 ## Examples
 
 Can be found in the `examples` directories.
-
-You will need Nix to run them ;)
 
 ## Build
 

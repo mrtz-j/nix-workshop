@@ -517,15 +517,18 @@
   ]
 ]
 
+#let starter = "https://github.com/mrtz-j/nix-workshop/starter"
+
 #slide[
   == Challenge
 
   - Create hello world apps in whatever language you want
   - Package it in nix
-    - default.nix
-    - direnv with shell.nix
+    - `default.nix`
+    - direnv with `shell.nix`
   - Have everyone else make them work by just entering your folder
   - Try adding dependencies
+  - Starter is provided in the #link(starter)[`starter` folder]
 ]
 
 #slide[
