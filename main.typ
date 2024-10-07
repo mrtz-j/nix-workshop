@@ -77,7 +77,7 @@
     gutter: 1.5cm,
     [
       - Nix: the package manager
-      - Nix: the programming language
+      - NixDSL: the programming language
       - Nixpkgs: the repository
       - NixOS: the operating system
     ],
@@ -209,7 +209,7 @@
   A _derivation_
 
   #grid(columns: 2, gutter: 3cm)[
-    - is plan / blueprint
+    - is a plan / blueprint
     - it's used for producing
       - `lib`: library outputs
       - `bin`: binary outputs
@@ -285,8 +285,8 @@
   == Nix Store
 
   ```nix
-  /nix/store/l2h1lyz50rz6z2c8jbni9daxjs39wmn3-hello
-  |---------|--------------------------------|-----|
+  /nix/store/l2h1lyz50rz6z2c8jbni9daxjs39wmn3-hi
+  |---------|--------------------------------|--|
   store     hash                             name
   prefix
   ```
