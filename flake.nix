@@ -1,5 +1,30 @@
+# Welcome to the Nix/Nixpkgs/NixOS Workshop!
+#
+# We are going through a set of examples 
+# to see what is possible with Nix.
+#
+# Good resources to start out with Nix are:
+# - https://nix.dev/
+# - https://nixos.org/guides/nix-pills/
+#
+# Reference documentation:
+# - https://nixos.org/learn/
+#
+# ----------------------------------------------------------------------------
+#
+# This file is written in the Nix language. Nix is more or less 
+# "JSON with functions". 
+# 
+# The Nix language is used to describe how software is built ("derivations").
+#
+# This file is a Nix "Flake", a self-contained description of
+# software. Everytime it is built it will produce the same output.
+
 {
   inputs = {
+    # Nixpkgs is a collection of packages ("derivations") written in Nix.
+    #
+    # There are a lot of packages: https://repology.org/repositories/graphs
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     parts = {
       url = "github:hercules-ci/flake-parts";
@@ -19,7 +44,9 @@
       inputs.typst-packages.follows = "typst-packages";
     };
   };
+  # We use lock files to pin our dependencies.
 
+  # ----------------------------------------------------------------------------
   outputs =
     inputs@{
       parts,
@@ -29,6 +56,7 @@
     }:
     parts.lib.mkFlake { inherit inputs; } {
       imports = [ inputs.pre-commit-hooks.flakeModule ];
+      # Environments we will use.
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
@@ -51,6 +79,7 @@
               typstyle.enable = true;
             };
           };
+          ### Basic packaging of a Typst application.
           packages.default = typst-nix.lib.${system}.mkTypstDerivation {
             name = "nix-workshop";
             src = ./.;
@@ -60,13 +89,16 @@
               preview = "${typst-packages}/packages/preview";
             };
           };
+          # Package your build and development environment with shell
+          # environments.
           devShells.default = pkgs.mkShell {
             name = "nix-workshop";
+
+            # Common developer tools.
             packages = with pkgs; [
               typst
               typstyle
               tinymist
-              typos
             ];
             shellHook = ''
               ${config.pre-commit.installationScript}
