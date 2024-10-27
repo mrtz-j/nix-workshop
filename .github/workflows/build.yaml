@@ -20,7 +20,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v4
         with:
           diagnostic-endpoint: ""
-      - run: nix -Lv flake check
+      - run: nix -Lv build -f . slides
   
   release:
     runs-on: ubuntu-latest
@@ -31,6 +31,13 @@ jobs:
         with:
           fetch-depth: '0'
           lfs: true
+      - uses: DeterminateSystems/nix-installer-action@v13
+        with:
+          diagnostic-endpoint: ""
+          source-url: "https://install.lix.systems/lix/lix-installer-x86_64-linux"
+      - uses: DeterminateSystems/magic-nix-cache-action@v4
+        with:
+          diagnostic-endpoint: ""
       - name: Create initial tag
         run: |
           if [ -z "$(git tag -l 'v*')" ]; then
@@ -45,8 +52,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: 'patch'
 
-      - uses: typst-community/setup-typst@v3
-      - run: typst compile ./main.typ main.pdf
+      - run: nix -Lv build -f . slides
 
       - name: Create Release
         id: create_release
@@ -57,4 +63,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            main.pdf
+            ./result/main.pdf

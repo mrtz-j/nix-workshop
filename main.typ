@@ -376,9 +376,9 @@
       ```
     ],
     [
-      *Formatter* (flake):
+      *Formatter*:
 
-      - `nix fmt`
+      - `nixfmt`
       - a single package, or $arrow.b$
 
       #v(2em)
@@ -428,21 +428,25 @@
       *or DIY!* #footnote[https://github.com/andir/npins]
     ],
     [
-      *w/ flakes*:
+      *w/ npins or niv*:
 
       ```nix
-      inputs = {
-        nixpkgsForA.url = "github:nixos/nixpkgs/<branch or hash>";
-        nixpkgsForB.url = "github:nixos/nixpkgs/<branch or hash>";
-        ...
-      };
+      let
+        sources = import ./nix;
+        pkgs = import sources.nixpkgs {};
+      in {
+        # Use pinned packages
+        hello = pkgs.hello;
+      }
+      ```
 
-      outputs = { self, ... }: {
-        ...
-        pkgsA.<some pkg>;
-        pkgsB.<some pkg>;
-        ...
-      };
+      Initialize npins with:
+      ```bash
+      npins init
+      # Channel
+      npins add channel 24.05
+      # GitHub
+      npins add github cachix/git-hooks.nix
       ```
     ],
   )
@@ -473,17 +477,18 @@
         inherit inputs pkgs;
       };
       modules = [ /* A list of modules goes here */ ];
-  };};
+    };
+  };
   ```
 
   *System Closure*:
   ```bash
-  nix build .#nixosConfigurations.coolpc.config.system.build.toplevel
+  nix build -f . nixosConfigurations.coolpc.config.system.build.toplevel
   ```
 
   *Rebuild*:
   ```bash
-  nixos-rebuild <switch|boot|...> --flake .#coolpc
+  nixos-rebuild <switch|boot|...>
   ```
 ]
 
@@ -534,9 +539,9 @@
 #slide[
   == Resources
 
-  - Installer: https://github.com/determinatesystems/nix-installer
+  - Installer: https://nix.dev/install-nix
   - REPL is your friend: `nix repl`
-  - Intro: https://zero-to-nix.com
+  - Intro: https://nix.dev/tutorials/first-steps/
   - Manual: https://nixos.org/manual/nix/unstable/
   - Forum: https://discourse.nixos.org
   - Options: https://mynixos.com
