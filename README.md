@@ -1,6 +1,6 @@
-# Introduction to Nix 29.10.2024
+# [29.10.2024] Introduction to Nix 
 
-[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+[![Build and Release](https://github.com/mrtz-j/nix-workshop/actions/workflows/build.yaml/badge.svg)](https://github.com/mrtz-j/nix-workshop/actions/workflows/build.yaml)
 
 Slides and demos for our nix workshop at UiT.
 
@@ -19,11 +19,11 @@ Can be found in the [`examples`](./examples) directories.
 The slides can be built with:
 
 ```bash
-nix -Lv build 
+nix -Lv build -f . slides
 ```
 
 or interactively with:
 
 ```bash
-nix -Lv develop --command typst watch main.typ main.pdf
+nix -Lv develop -f . slides --command typst watch main.typ main.pdf
 ```
