@@ -18,12 +18,12 @@ Can be found in the [`examples`](./examples) directories.
 
 The slides can be built with:
 
-```bash
+```console
 nix -Lv build -f . slides
 ```
 
 or interactively with:
 
-```bash
+```console
 nix -Lv develop -f . slides --command typst watch main.typ main.pdf
 ```

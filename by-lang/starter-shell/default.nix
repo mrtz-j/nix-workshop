@@ -7,12 +7,13 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = ./.;
 
-  buildInputs = [ pkgs.neo-cowsay
-  pkgs.lolcat
-  pkgs.fortune
+  buildInputs = [
+    pkgs.neo-cowsay
+    pkgs.lolcat
+    pkgs.fortune
   ];
 
-    installPhase = ''
+  installPhase = ''
     mkdir -p $out/bin
     # Create a script that runs the desired command
     echo '#!/bin/sh' > $out/bin/run-fortune-cowsay

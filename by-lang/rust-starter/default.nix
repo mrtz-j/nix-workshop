@@ -7,7 +7,10 @@ pkgs.stdenv.mkDerivation {
   version = "0.1.0";
   src = ./.;
 
-  buildInputs = [ pkgs.rustc pkgs.cargo ];
+  buildInputs = [
+    pkgs.rustc
+    pkgs.cargo
+  ];
 
   buildPhase = "cargo build --release";
 
