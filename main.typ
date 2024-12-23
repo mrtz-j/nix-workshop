@@ -376,9 +376,9 @@
       ```
     ],
     [
-      *Formatter*:
+      *Formatter (flake)*:
 
-      - `nixfmt`
+      - `nix fmt`
       - a single package, or $arrow.b$
 
       #v(2em)
@@ -428,25 +428,20 @@
       *or DIY!* #footnote[https://github.com/andir/npins]
     ],
     [
-      *w/ npins or niv*:
+      *w/ flakes*:
 
       ```nix
-      let
-        sources = import ./nix;
-        pkgs = import sources.nixpkgs {};
-      in {
-        # Use pinned packages
-        hello = pkgs.hello;
-      }
-      ```
-
-      Initialize npins with:
-      ```bash
-      npins init
-      # Channel
-      npins add channel 24.05
-      # GitHub
-      npins add github cachix/git-hooks.nix
+      inputs = {
+        nixpkgsForA.url = "github:nixos/nixpkgs/<branch or hash>";
+        nixpkgsForB.url = "github:nixos/nixpkgs/<branch or hash>";
+        ...
+      };
+      outputs = { self, ... }: {
+        ...
+        pkgsA.<some pkg>;
+        pkgsB.<some pkg>;
+        ...
+      };
       ```
     ],
   )
@@ -483,12 +478,12 @@
 
   *System Closure*:
   ```bash
-  nix build -f . nixosConfigurations.coolpc.config.system.build.toplevel
+  nix build .#nixosConfigurations.coolpc.config.system.build.toplevel
   ```
 
   *Rebuild*:
   ```bash
-  nixos-rebuild <switch|boot|...>
+  nixos-rebuild <switch|boot|...> --flake .#coolpc
   ```
 ]
 
@@ -511,7 +506,8 @@
 
   #grid(
     columns: 2,
-    gutter: 2cm,)[
+    gutter: 2cm,
+  )[
 
     They are here:#footnote(link(slides))
 

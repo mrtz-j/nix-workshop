@@ -20,7 +20,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v8
         with:
           diagnostic-endpoint: ""
-      - run: nix -Lv build -f . slides
+      - run: nix -Lv flake check
   
   release:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: 'patch'
 
-      - run: nix -Lv build -f . slides
+      - run: nix -Lv build .#slides
 
       - name: Create Release
         id: create_release

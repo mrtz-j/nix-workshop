@@ -7,7 +7,7 @@
   ],
   "dependencyDashboard": false,
   "lockFileMaintenance": {
-    "enabled": false
+    "enabled": true
   },
   "nix": {
     "enabled": true
